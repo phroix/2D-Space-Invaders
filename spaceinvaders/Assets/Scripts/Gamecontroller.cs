@@ -17,7 +17,7 @@ class Gamecontroller : MonoBehaviour
     public GameObject menuCanvas;
     public GameObject prefabEnemyGroup;
     public GameObject prefabBossGroup;
-    Barricades [] barricades;
+    Barricades[] barricades;
 
     //EndlessGame
     private static bool endless = false;
@@ -71,7 +71,8 @@ class Gamecontroller : MonoBehaviour
         coinText.text = "Coins: " + coins.ToString();
     }
 
-    public static void activateEndlessGame() {
+    public static void activateEndlessGame()
+    {
         endless = true;
     }
 
@@ -81,9 +82,9 @@ class Gamecontroller : MonoBehaviour
         PauseGame();
         if (endless)
         {
-            
+
             // Only get the Elements once
-            if (bossGroup == null && (anzEnemyGroupsLoaded%bossSpawnIntervall) == 0)
+            if (bossGroup == null && (anzEnemyGroupsLoaded % bossSpawnIntervall) == 0)
             {
                 bossGroup = GameObject.Find("Boss_Group");
                 bossGroupController = bossGroup.GetComponent<EnemyController>();
@@ -161,7 +162,8 @@ class Gamecontroller : MonoBehaviour
             {
                 Debug.Log("Enemies are 0 now!");
                 //Load New Set of Enemys, when endlessgame activatet
-                if (endless) {
+                if (endless)
+                {
                     loadNewEnemyGroup();
                 }
                 else
@@ -176,24 +178,28 @@ class Gamecontroller : MonoBehaviour
      * Loads New Enemy Group
      * -> if doable, loads Boss after certain amount of "rounds"
      */
-    public void loadNewEnemyGroup() {
+    public void loadNewEnemyGroup()
+    {
         anzEnemyGroupsLoaded++;
 
         float yCoordinate = 1.9f;
 
-        if (enemyGroup != null) {
+        if (enemyGroup != null)
+        {
             Destroy(enemyGroup);
         }
-        if(bossGroup != null){
+        if (bossGroup != null)
+        {
             Destroy(bossGroup);
         }
-        
+
         //Loads a new prefab into the gameScene
         if ((anzEnemyGroupsLoaded % bossSpawnIntervall) == 0)
         {
             bossGroup = Instantiate(prefabBossGroup, new Vector3(0, yCoordinate, 0), Quaternion.identity) as GameObject;
         }
-        else {
+        else
+        {
             enemyGroup = Instantiate(prefabEnemyGroup, new Vector3(0, yCoordinate, 0), Quaternion.identity) as GameObject;
             controller = enemyGroup.GetComponent<EnemyController>();
             enemies = controller.anzahlEne;
@@ -217,16 +223,21 @@ class Gamecontroller : MonoBehaviour
 
     public void BuyBarricadesHealth()
     {
-        for (int i = 0; i < barricades.Length; i++)
-        barricades[i].IncreaseHealth();
-        coins -= 25;
-        coinText.text = "Coins: " + coins.ToString();
+        if (coins >= 25)
+        {
+            for (int i = 0; i < barricades.Length; i++)
+            {
+                barricades[i].IncreaseHealth();
+            }
+            coins -= 25;
+            coinText.text = "Coins: " + coins.ToString();
+        }
     }
 
     public void StartGame()
     {
         Time.timeScale = 1;
-        if(shopCanvas != null)
+        if (shopCanvas != null)
         {
             shopCanvas.SetActive(false);
 

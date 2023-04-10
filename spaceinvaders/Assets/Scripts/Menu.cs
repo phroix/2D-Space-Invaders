@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
     public void LoadGameScene()
     {
         SceneManager.LoadScene("GameScene");
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadEndlessGameScene()
